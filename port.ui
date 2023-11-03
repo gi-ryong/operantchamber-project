@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Scitech_Korea</class>
+ <widget class="QMainWindow" name="Scitech_Korea">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>801</width>
+    <height>430</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>30</y>
+      <width>71</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Serial Port</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="port_list">
+    <property name="geometry">
+     <rect>
+      <x>90</x>
+      <y>30</y>
+      <width>81</width>
+      <height>31</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn">
+    <property name="geometry">
+     <rect>
+      <x>180</x>
+      <y>30</y>
+      <width>81</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>찾기</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="port_done">
+    <property name="geometry">
+     <rect>
+      <x>270</x>
+      <y>30</y>
+      <width>81</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>연결</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>90</y>
+      <width>111</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Experiment  ID:</string>
+    </property>
+   </widget>
+   <widget class="QPlainTextEdit" name="experiment_input">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>90</y>
+      <width>104</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="layoutDirection">
+     <enum>Qt::LeftToRight</enum>
+    </property>
+    <property name="tabChangesFocus">
+     <bool>false</bool>
+    </property>
+    <property name="undoRedoEnabled">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>140</y>
+      <width>111</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Reward Duration :</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_4">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>190</y>
+      <width>111</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Hav2 Trials :</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_5">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>240</y>
+      <width>111</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Must Touch Trials :</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_6">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>290</y>
+      <width>111</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Video Recording :</string>
+    </property>
+   </widget>
+   <widget class="QPlainTextEdit" name="reward_input">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>140</y>
+      <width>104</width>
+      <height>31</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPlainTextEdit" name="hav2_input">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>190</y>
+      <width>104</width>
+      <height>31</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPlainTextEdit" name="touch_input">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>240</y>
+      <width>104</width>
+      <height>31</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="start">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>330</y>
+      <width>131</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>시작</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="box" native="true">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>290</y>
+      <width>121</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <layout class="QFormLayout" name="formLayout">
+     <item row="0" column="0">
+      <widget class="QRadioButton" name="yes_btn">
+       <property name="maximumSize">
+        <size>
+         <width>46</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>YES</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QRadioButton" name="no_btn">
+       <property name="text">
+        <string> NO</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QTextEdit" name="text">
+    <property name="geometry">
+     <rect>
+      <x>310</x>
+      <y>110</y>
+      <width>461</width>
+      <height>251</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QTextEdit" name="video_text">
+    <property name="geometry">
+     <rect>
+      <x>310</x>
+      <y>70</y>
+      <width>171</width>
+      <height>31</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QTextEdit" name="ITI_text">
+    <property name="geometry">
+     <rect>
+      <x>490</x>
+      <y>70</y>
+      <width>151</width>
+      <height>31</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="end">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>330</y>
+      <width>131</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>종료</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
