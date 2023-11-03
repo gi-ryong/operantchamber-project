@@ -93,17 +93,13 @@ class WindowClass(QMainWindow, form_class):
 
     def start_btn_(self):
         if self.ser:
-            
-            
-            
-            
             self.stop_receiving_data = False
             experiment_id = self.experiment_input.toPlainText()
             rd = self.reward_input.toPlainText()
             habv2_trials = self.hav2_input.toPlainText()
             must_touch_trials = self.touch_input.toPlainText()
 
-            missing_fields = []   # 경고 메세지
+            missing_fields = []  # 경고 메시지
 
             if not experiment_id:
                 missing_fields.append("experiment_id")
@@ -118,10 +114,15 @@ class WindowClass(QMainWindow, form_class):
                 QMessageBox.critical(self, "경고", f"{', '.join(missing_fields)}을(를) 입력하세요.")
                 return
 
+            video = None  # 선택된 라디오 버튼을 추적하기 위한 변수
             if self.yes_btn.isChecked():
                 video = 'y'
             elif self.no_btn.isChecked():
                 video = 'n'
+
+            if video is None:
+                QMessageBox.critical(self, "경고", "비디오 녹화 여부를 선택하세요.")
+                return
 
             experiment_id = experiment_id.encode('utf-8')
             rd = rd.encode('utf-8')
@@ -147,6 +148,7 @@ class WindowClass(QMainWindow, form_class):
                 self.receive_and_display_data()
         else:
             print("Serial port is not open. Please open the port before starting the experiment.")
+
 
 
 
