@@ -35,7 +35,12 @@ class WindowClass(QMainWindow, form_class):
         self.start.setEnabled(False)  # 시작 버튼 비활성화
         self.end.setEnabled(False)
 
+        
+        self.yes_btn.setAutoExclusive(False)
+        self.no_btn.setAutoExclusive(False)
+        
     def btn_clicked(self):
+        self.port_list.setEnabled(True)
         global nnum
         nnum = nnum + 1
         self.port_list.addItem("COM" + str(nnum))
@@ -93,6 +98,12 @@ class WindowClass(QMainWindow, form_class):
 
     def start_btn_(self):
         if self.ser:
+            
+            self.btn.setEnabled(False)
+            self.port_done.setEnabled(False)
+            self.port_list.setEnabled(False)
+            
+            
             self.stop_receiving_data = False
             experiment_id = self.experiment_input.toPlainText()
             rd = self.reward_input.toPlainText()
@@ -143,8 +154,11 @@ class WindowClass(QMainWindow, form_class):
             self.send_and_receive("video recording?(y/n):", video)
 
             if self.ser:
+                time.sleep(0.1)
                 self.start.setEnabled(False)
+                time.sleep(0.1)
                 self.end.setEnabled(True)
+                time.sleep(0.1)
                 self.receive_and_display_data()
         else:
             print("Serial port is not open. Please open the port before starting the experiment.")
@@ -207,6 +221,8 @@ class WindowClass(QMainWindow, form_class):
                     elif line:
                         self.text.insertPlainText(line)
                         print(f"Line doesn't start with '*' or '@': {line}")
+                        scrollbar = self.text.verticalScrollBar()  # 스크롤바 자동으로 내리기
+                        scrollbar.setValue(scrollbar.maximum())
                         QApplication.processEvents()
         else:
             print("Serial port is not open. Please open the port before starting the data display.")
@@ -214,7 +230,21 @@ class WindowClass(QMainWindow, form_class):
 
         
     def end_btn_(self):
-        self.video_text.clear()
+        
+        
+        self.btn.setEnabled(True)
+        self.port_done.setEnabled(True)
+        
+        
+         # video 버튼 체크 해제
+        if self.yes_btn.isChecked():
+            self.yes_btn.toggle()
+        if self.no_btn.isChecked():
+            self.no_btn.toggle()
+            
+        
+        
+        
         self.ITI_text.clear()
         self.text.clear()
         self.experiment_input.clear()
@@ -223,22 +253,27 @@ class WindowClass(QMainWindow, form_class):
         self.touch_input.clear()
         self.video_text.clear()
         
-        if self.yes_btn.isChecked() == True:
-            self.yes_btn.toggle()
-        elif self.no_btn.isChecked() == True:
-            self.no_btn.toggle()
         
+        
+      
         
     
         ctrl_c = b'\x03'
 
         if self.ser:
+            
             self.end.setEnabled(False)
             
             self.stop_receiving_data = True
             
+            self.video_text.clear()
+            QApplication.processEvents()
+            print("Clearing video_text")
             self.ser.write(ctrl_c)
             self.ser.close()
+        
+            
+                     
             
             
     def run(self):
