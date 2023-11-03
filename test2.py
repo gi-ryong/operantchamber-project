@@ -21,7 +21,7 @@ class WindowClass(QMainWindow, form_class):
         self.setWindowTitle("Operant_Chamber_Ver 1.0")
         self.setWindowIcon(QIcon("Scitech_Korea.png"))
         
-        
+        self.btn1_clicked()
         
         
         self.btn.clicked.connect(lambda: (self.btn_clicked(), self.btn1_clicked()))
@@ -33,7 +33,7 @@ class WindowClass(QMainWindow, form_class):
         self.stop_receiving_data = False
         
         self.start.setEnabled(False)  # 시작 버튼 비활성화
-        self.end.setEnabled(False)  # 종료 버튼 비활성화
+        self.end.setEnabled(False)
 
     def btn_clicked(self):
         global nnum
@@ -93,28 +93,48 @@ class WindowClass(QMainWindow, form_class):
 
     def start_btn_(self):
         if self.ser:
+            
+            
+            
+            
             self.stop_receiving_data = False
             experiment_id = self.experiment_input.toPlainText()
             rd = self.reward_input.toPlainText()
             habv2_trials = self.hav2_input.toPlainText()
             must_touch_trials = self.touch_input.toPlainText()
+
+            missing_fields = []   # 경고 메세지
+
+            if not experiment_id:
+                missing_fields.append("experiment_id")
+            if not rd:
+                missing_fields.append("reward duration")
+            if not habv2_trials:
+                missing_fields.append("habv2 trials")
+            if not must_touch_trials:
+                missing_fields.append("must touch trials")
+
+            if missing_fields:
+                QMessageBox.critical(self, "경고", f"{', '.join(missing_fields)}을(를) 입력하세요.")
+                return
+
             if self.yes_btn.isChecked():
                 video = 'y'
             elif self.no_btn.isChecked():
                 video = 'n'
-    
+
             experiment_id = experiment_id.encode('utf-8')
             rd = rd.encode('utf-8')
             habv2_trials = habv2_trials.encode('utf-8')
             must_touch_trials = must_touch_trials.encode('utf-8')
             video = video.encode('utf-8')
-    
+
             self.text.insertPlainText('experiment_id :' + experiment_id.decode('utf-8') + '\n')
             self.text.insertPlainText('reward duration :' + rd.decode('utf-8') + '\n')
             self.text.insertPlainText('habv2 trials :' + habv2_trials.decode('utf-8') + '\n')
             self.text.insertPlainText('must touch trials :' + must_touch_trials.decode('utf-8') + '\n')
             self.text.insertPlainText('video recording :' + video.decode('utf-8') + '\n')
-    
+
             self.send_and_receive("experiment id:", experiment_id)
             self.send_and_receive("reward duration:", rd)
             self.send_and_receive("habv2 trials:", habv2_trials)
@@ -122,16 +142,12 @@ class WindowClass(QMainWindow, form_class):
             self.send_and_receive("video recording?(y/n):", video)
 
             if self.ser:
+                self.start.setEnabled(False)
+                self.end.setEnabled(True)
                 self.receive_and_display_data()
-                
-            else:
-                print("Serial port is not open. Please open the port before starting the experiment.")
-                
-            self.start.setEnabled(False)
-            self.end.setEnabled(True)
-        
         else:
             print("Serial port is not open. Please open the port before starting the experiment.")
+
 
 
     def send_and_receive(self, command, data):
@@ -215,8 +231,8 @@ class WindowClass(QMainWindow, form_class):
         ctrl_c = b'\x03'
 
         if self.ser:
-            
             self.end.setEnabled(False)
+            
             self.stop_receiving_data = True
             
             self.ser.write(ctrl_c)
