@@ -6,6 +6,7 @@ import serial.tools.list_ports
 import time
 import os
 import serial
+from PyQt5.QtWidgets import QApplication, QMainWindow
 
 form_class = uic.loadUiType("port.ui")[0]
 
@@ -20,6 +21,11 @@ class WindowClass(QMainWindow, form_class):
         self.setupUi(self)
         self.setWindowTitle("Operant_Chamber_Ver 1.0")
         self.setWindowIcon(QIcon("Scitech_Korea.png"))
+        
+        self.statusbar = QStatusBar(self)   # 상태바 객체 생성
+        self.setStatusBar(self.statusbar)
+        
+        self.statusbar.showMessage("Ready to connect")
         
         self.btn1_clicked()
         
@@ -63,7 +69,10 @@ class WindowClass(QMainWindow, form_class):
                 self.port_list.addItem(aa)
                 
     def port_done_btn(self):
+        self.port_done.setText("연결 완료")
+        
         try:
+            
             ser = serial.Serial(self.port_list.currentText(), 115200,timeout=1, stopbits=serial.STOPBITS_ONE)
             self.ser = ser
             print("성공")
@@ -91,6 +100,8 @@ class WindowClass(QMainWindow, form_class):
                 print("응답을 찾지 못했습니다. 타임아웃")
                 
             self.start.setEnabled(True)
+            self.statusbar.showMessage("Connected")   # 상태바 ready 표시
+            
                 
         except serial.SerialException as e:
             print(f"Failed to open the serial port: {e}")
@@ -160,6 +171,8 @@ class WindowClass(QMainWindow, form_class):
                 self.end.setEnabled(True)
                 time.sleep(0.1)
                 self.receive_and_display_data()
+                
+                
         else:
             print("Serial port is not open. Please open the port before starting the experiment.")
 
@@ -193,6 +206,7 @@ class WindowClass(QMainWindow, form_class):
             buffer = ""  # 데이터를 저장할 버퍼 변수
 
         while not self.stop_receiving_data:
+            self.statusbar.showMessage("Start of the experiment")   # 상태바 start 표시
             time.sleep(0.01)
             tempTime = time.time()
             data_received = self.ser.read(1024).decode('utf-8')  # 데이터를 읽습니다 (예: 1024바이트 읽음)
@@ -206,12 +220,14 @@ class WindowClass(QMainWindow, form_class):
                     
                     if line and line[0] == '*':  # video record 찾기
                         new_text = line[1:]
+                        new_text = new_text.strip()
                         self.video_text.clear()  # 기존 텍스트를 모두 제거
                         self.video_text.insertPlainText(new_text)
                         QApplication.processEvents()
                         
                     elif line and line[0] == '@':  # ITI 찾기
                         ITI_new_text = line[1:]
+                        ITI_new_text = ITI_new_text.strip()
                         self.ITI_text.clear()  # 기존 텍스트를 모두 제거
                         self.ITI_text.insertPlainText(ITI_new_text)
                         QApplication.processEvents()
@@ -230,8 +246,8 @@ class WindowClass(QMainWindow, form_class):
 
         
     def end_btn_(self):
-        
-        
+        self.statusbar.showMessage("Ready to connect")
+        self.port_done.setText("연결")
         self.btn.setEnabled(True)
         self.port_done.setEnabled(True)
         
