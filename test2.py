@@ -25,7 +25,7 @@ class WindowClass(QMainWindow, form_class):
         self.statusbar = QStatusBar(self)   # 상태바 객체 생성
         self.setStatusBar(self.statusbar)
         
-        self.statusbar.showMessage("Ready to connect")
+        self.statusbar.showMessage("Ready to connect")  # 상태바 Ready to connect 표시
         
         self.btn1_clicked()
         
@@ -100,7 +100,7 @@ class WindowClass(QMainWindow, form_class):
                 print("응답을 찾지 못했습니다. 타임아웃")
                 
             self.start.setEnabled(True)
-            self.statusbar.showMessage("Connected")   # 상태바 ready 표시
+            self.statusbar.showMessage("Connected")   # 상태바 Connected 표시
             
                 
         except serial.SerialException as e:
@@ -206,7 +206,7 @@ class WindowClass(QMainWindow, form_class):
             buffer = ""  # 데이터를 저장할 버퍼 변수
 
         while not self.stop_receiving_data:
-            self.statusbar.showMessage("Start of the experiment")   # 상태바 start 표시
+            self.statusbar.showMessage("Start of the experiment")   # 상태바 Start of the experiment 표시
             time.sleep(0.01)
             tempTime = time.time()
             data_received = self.ser.read(1024).decode('utf-8')  # 데이터를 읽습니다 (예: 1024바이트 읽음)
