@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>684</width>
-    <height>392</height>
+    <height>412</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -196,7 +196,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>시작</string>
+     <string>실험 시작</string>
     </property>
    </widget>
    <widget class="QPushButton" name="end">
@@ -209,7 +209,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>종료</string>
+     <string>실험 종료</string>
     </property>
    </widget>
    <widget class="QRadioButton" name="yes_btn">
@@ -268,7 +268,26 @@
      </rect>
     </property>
    </widget>
+   <widget class="QPushButton" name="exit">
+    <property name="geometry">
+     <rect>
+      <x>580</x>
+      <y>30</y>
+      <width>81</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>종료</string>
+    </property>
+   </widget>
   </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionopen">
+   <property name="text">
+    <string>open</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>
