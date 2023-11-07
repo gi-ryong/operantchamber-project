@@ -7,6 +7,7 @@ import time
 import os
 import serial
 from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5.QtWidgets import QMainWindow, QApplication, QVBoxLayout, QPushButton, QWidget
 import subprocess
 
 form_class = uic.loadUiType("port.ui")[0]
@@ -35,7 +36,8 @@ class WindowClass(QMainWindow, form_class):
         self.port_done.clicked.connect(self.port_done_btn)
         self.start.clicked.connect(self.start_btn_)
         self.end.clicked.connect(self.end_btn_)
-        # self.usb_btn.clicked.connect(self.USB)
+        self.exit.clicked.connect(self.exit_btn)
+        
         
         self.ser = None
         self.stop_receiving_data = False
@@ -86,8 +88,11 @@ class WindowClass(QMainWindow, form_class):
                 
 
             else:
-                 self.run()
-                    
+                self.run()
+                self.btn.setEnabled(False)
+                self.port_done.setEnabled(False)
+                self.port_list.setEnabled(False)
+                        
         except serial.SerialException as e:
             print(f"Failed to open the serial port: {e}")
             print(type(self.port_list.currentText()), self.port_list.currentText())
@@ -95,9 +100,7 @@ class WindowClass(QMainWindow, form_class):
     def start_btn_(self):
         if self.ser:
             
-            self.btn.setEnabled(False)
-            self.port_done.setEnabled(False)
-            self.port_list.setEnabled(False)
+            
             
             
             self.stop_receiving_data = False
@@ -328,19 +331,21 @@ class WindowClass(QMainWindow, form_class):
         self.statusbar.showMessage("Connected")   # 상태바 Connected 표시 
      
         
-    def USB(self):
-        self.ser.write(b'ls /media/pi\n')  # "/media/pi" 디렉토리에 대한 ls 명령을 보냅니다.
+    def USB(self): # USB 연결 확인
+        self.ser.write(b'ls /media/pi\n')  # ls 명령어로 디렉토리 확인
         time.sleep(0.5)
 
         ls_data = self.ser.read(1024).decode('utf-8')  # 실행 결과를 읽습니다.
-        print(f'data : {ls_data}')
-        if "SCITECH" in ls_data:
+        
+        if "SCITECH" in ls_data: # USB 이름이 있는지 연결확인
             return True
         else:
             return False
     
-
-
+    def exit_btn(self):
+        self.ser.write(b'sudo shutdown -h now\n')  
+        time.sleep(0.5)
+        self.close()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
