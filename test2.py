@@ -7,6 +7,7 @@ import time
 import os
 import serial
 from PyQt5.QtWidgets import QApplication, QMainWindow
+import subprocess
 
 form_class = uic.loadUiType("port.ui")[0]
 
@@ -34,6 +35,7 @@ class WindowClass(QMainWindow, form_class):
         self.port_done.clicked.connect(self.port_done_btn)
         self.start.clicked.connect(self.start_btn_)
         self.end.clicked.connect(self.end_btn_)
+        # self.usb_btn.clicked.connect(self.USB)
         
         self.ser = None
         self.stop_receiving_data = False
@@ -69,40 +71,23 @@ class WindowClass(QMainWindow, form_class):
                 self.port_list.addItem(aa)
                 
     def port_done_btn(self):
-        self.port_done.setText("연결 완료")
         
+        self.ser = None
         try:
             
             ser = serial.Serial(self.port_list.currentText(), 115200,timeout=1, stopbits=serial.STOPBITS_ONE)
             self.ser = ser
             print("성공")
             
-            self.run()
+            self.pi_login()
             
-            desired_response = "Hello from the pygame community. https://www.pygame.org/contribute.html"
-            # 이 문자열이 날라와야해서 변수에 저장
-            found_response = False
-
-            timeout = 3
-            start_time = time.time()
-
-            while time.time() - start_time < timeout:
+            if not self.USB():
+                QMessageBox.critical(self, "경고", "USB를 연결하세요.")
                 
-                response = ser.readline().decode('utf-8').strip()
-    
-                if desired_response in response: # 여기서 문자열 올 때 까지 기다림
-                    found_response = True
-                    break
 
-            if found_response:
-                print("응답이 도착했습니다:", response)
             else:
-                print("응답을 찾지 못했습니다. 타임아웃")
-                
-            self.start.setEnabled(True)
-            self.statusbar.showMessage("Connected")   # 상태바 Connected 표시
-            
-                
+                 self.run()
+                    
         except serial.SerialException as e:
             print(f"Failed to open the serial port: {e}")
             print(type(self.port_list.currentText()), self.port_list.currentText())
@@ -292,23 +277,70 @@ class WindowClass(QMainWindow, form_class):
                      
             
             
-    def run(self):
+    def pi_login(self):
         
             self.ser.write(b'\n')  # 엔터키 입력
-            time.sleep(1)
+            time.sleep(0.5)
             self.ser.write(b'pi\n')  # 사용자 이름 입력
-            time.sleep(1)
+            time.sleep(0.5)
             self.ser.write(b'password\n')  # 비밀번호 입력
-            time.sleep(1)
-            self.ser.write(b'cd Desktop\n')
-            time.sleep(1)
-            self.ser.write(b'export DISPLAY=:0\n')
-            time.sleep(1)
-            self.ser.write(b'python pretraining.py \n')
-            time.sleep(1)
+            time.sleep(0.5)
+            
         
+     
+    def run(self):
+        self.ser.write(b'cd ../\n')
+        time.sleep(0.5)
+        self.ser.write(b'cd ../\n')
+        time.sleep(0.5)
+        self.ser.write(b'cd ~\n')
+        time.sleep(0.5)
+        self.ser.write(b'cd Desktop\n')
+        time.sleep(0.5)
+        self.ser.write(b'export DISPLAY=:0\n')
+        time.sleep(0.5)
+        self.ser.write(b'python pretraining.py \n')
+        time.sleep(0.5)
         
+        desired_response = "Hello from the pygame community. https://www.pygame.org/contribute.html"
+            # 이 문자열이 날라와야해서 변수에 저장
+            
+        found_response = False
+
+        timeout = 3
+        start_time = time.time()
+
+        while time.time() - start_time < timeout:
+            
+            response = self.ser.readline().decode('utf-8').strip()
+
+            if desired_response in response: # 여기서 문자열 올 때 까지 기다림
+                found_response = True
+                self.port_done.setText("연결 완료")
+                break
+
+        if found_response:
+            print("응답이 도착했습니다:", response)
+        else:
+            print("응답을 찾지 못했습니다. 타임아웃")
+            
+        self.start.setEnabled(True)
+        self.statusbar.showMessage("Connected")   # 상태바 Connected 표시 
+     
         
+    def USB(self):
+        self.ser.write(b'ls /media/pi\n')  # "/media/pi" 디렉토리에 대한 ls 명령을 보냅니다.
+        time.sleep(0.5)
+
+        ls_data = self.ser.read(1024).decode('utf-8')  # 실행 결과를 읽습니다.
+        print(f'data : {ls_data}')
+        if "SCITECH" in ls_data:
+            return True
+        else:
+            return False
+    
+
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
