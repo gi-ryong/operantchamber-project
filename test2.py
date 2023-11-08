@@ -14,6 +14,8 @@ form_class = uic.loadUiType("port.ui")[0]
 
 nnum = 0  # 여기에 선언하면 전역변수
 
+ctrl_c = b'\x03'
+
 class WindowClass(QMainWindow, form_class):
     
     
@@ -262,9 +264,10 @@ class WindowClass(QMainWindow, form_class):
       
         
     
-        ctrl_c = b'\x03'
+        
 
         if self.ser:
+            
             
             self.end.setEnabled(False)
             
@@ -275,6 +278,8 @@ class WindowClass(QMainWindow, form_class):
             print("Clearing video_text")
             self.ser.write(ctrl_c)
             self.ser.close()
+            
+        self.ser = None
         
             
                      
@@ -283,27 +288,23 @@ class WindowClass(QMainWindow, form_class):
     def pi_login(self):
         
             self.ser.write(b'\n')  # 엔터키 입력
-            time.sleep(0.5)
+            time.sleep(0.1)
             self.ser.write(b'pi\n')  # 사용자 이름 입력
-            time.sleep(0.5)
+            time.sleep(0.1)
             self.ser.write(b'password\n')  # 비밀번호 입력
-            time.sleep(0.5)
+            time.sleep(0.1)
             
         
      
     def run(self):
-        self.ser.write(b'cd ../\n')
-        time.sleep(0.5)
-        self.ser.write(b'cd ../\n')
-        time.sleep(0.5)
-        self.ser.write(b'cd ~\n')
-        time.sleep(0.5)
+        
+        
         self.ser.write(b'cd Desktop\n')
-        time.sleep(0.5)
+        time.sleep(0.1)
         self.ser.write(b'export DISPLAY=:0\n')
-        time.sleep(0.5)
+        time.sleep(0.1)
         self.ser.write(b'python pretraining.py \n')
-        time.sleep(0.5)
+        time.sleep(0.1)
         
         desired_response = "Hello from the pygame community. https://www.pygame.org/contribute.html"
             # 이 문자열이 날라와야해서 변수에 저장
@@ -333,7 +334,7 @@ class WindowClass(QMainWindow, form_class):
         
     def USB(self): # USB 연결 확인
         self.ser.write(b'ls /media/pi\n')  # ls 명령어로 디렉토리 확인
-        time.sleep(0.5)
+        time.sleep(0.1)
 
         ls_data = self.ser.read(1024).decode('utf-8')  # 실행 결과를 읽습니다.
         
@@ -342,10 +343,33 @@ class WindowClass(QMainWindow, form_class):
         else:
             return False
     
-    def exit_btn(self):
-        self.ser.write(b'sudo shutdown -h now\n')  
-        time.sleep(0.5)
-        self.close()
+    def exit_btn(self): # 라즈베리파이 종료 및 프로그램 종료
+        if self.ser: # 시리얼 포트 열려있으면 실행
+            try:
+                if self.ser.is_open:
+                    self.ser.write(ctrl_c)
+                    self.ser.write(b'sudo shutdown -h now\n')  
+                    time.sleep(0.1)
+                    end_read = self.ser.read(1024).decode('utf-8')
+                    print(end_read)
+                    self.close()
+                else:
+                    print("Serial port is not open.")
+            except Exception as e:
+                print(f"An error occurred: {e}")
+        else: # 안열려 있으면 실행
+            try:
+                self.ser = serial.Serial(self.port_list.currentText(), 115200, timeout=1, stopbits=serial.STOPBITS_ONE)
+                self.ser.write(ctrl_c)
+                self.ser.write(b'sudo shutdown -h now\n')  
+                time.sleep(0.1)
+                end_read = self.ser.read(1024).decode('utf-8')
+                print(end_read)
+                self.close()
+            except Exception as e:
+                print(f"An error occurred: {e}")
+
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
