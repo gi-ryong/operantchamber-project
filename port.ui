@@ -281,6 +281,19 @@
      <string>종료</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="datawindow">
+    <property name="geometry">
+     <rect>
+      <x>420</x>
+      <y>30</y>
+      <width>81</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>데이터 확인</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionopen">
