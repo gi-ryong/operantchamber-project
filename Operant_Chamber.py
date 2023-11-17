@@ -9,6 +9,7 @@ import serial
 from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5.QtWidgets import QMainWindow, QApplication, QVBoxLayout, QPushButton, QWidget
 import subprocess
+from secondwindow import secondwindow as SecondWindowClass
 
 form_class = uic.loadUiType("port.ui")[0]
 
@@ -39,8 +40,9 @@ class WindowClass(QMainWindow, form_class):
         self.start.clicked.connect(self.start_btn_)
         self.end.clicked.connect(self.end_btn_)
         self.exit.clicked.connect(self.exit_btn)
+        self.datawindow.clicked.connect(self.button_Second)
         
-        
+        self.USB_name = 'USER'        # USB 이름
         self.ser = None
         self.stop_receiving_data = False
         
@@ -77,6 +79,7 @@ class WindowClass(QMainWindow, form_class):
     def port_done_btn(self):
         
         self.ser = None
+         
         try:
             
             ser = serial.Serial(self.port_list.currentText(), 115200,timeout=1, stopbits=serial.STOPBITS_ONE)
@@ -86,7 +89,7 @@ class WindowClass(QMainWindow, form_class):
             self.pi_login()
             
             if not self.USB():
-                QMessageBox.critical(self, "경고", "USB를 연결하세요.")
+                QMessageBox.critical(self, "경고", "USB를 연결하세요. \n또는 Port 번호를 확인하세요.")
                 
 
             else:
@@ -188,6 +191,7 @@ class WindowClass(QMainWindow, form_class):
             self.ser.write(data + b'\n')
         else:
             print("응답을 찾지 못했습니다. 타임아웃")
+            
 
     def receive_and_display_data(self):
         
@@ -346,7 +350,7 @@ class WindowClass(QMainWindow, form_class):
 
         ls_data = self.ser.read(1024).decode('utf-8')  # 실행 결과를 읽습니다.
         
-        if "SCITECH" in ls_data: # USB 이름이 있는지 연결확인
+        if self.USB_name in ls_data: # USB 이름이 있는지 연결확인
             return True
         else:
             return False
@@ -376,6 +380,17 @@ class WindowClass(QMainWindow, form_class):
                 self.close()
             except Exception as e:
                 print(f"An error occurred: {e}")
+
+
+
+
+    def button_Second(self):
+        self.hide()
+        self.second = SecondWindowClass(self)
+        self.second.exec()
+        self.show()
+
+
 
 
 
