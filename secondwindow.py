@@ -1,7 +1,15 @@
-import sys
-from PyQt5.QtWidgets import *
-from PyQt5 import uic
-import pickle
+import sys                              
+from PyQt5.QtWidgets import *           # PyQt5 사용하기 위한 것
+from PyQt5 import uic                   # ui 파일을 직접 이용하기 위한 것
+from PyQt5.QtGui import *
+import serial.tools.list_ports
+import time
+import os
+import serial
+from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5.QtWidgets import QMainWindow, QApplication, QVBoxLayout, QPushButton, QWidget
+import subprocess
+
 
 form_secondwindow = uic.loadUiType("secondwindow.ui")[0] #두 번째창 ui
 class secondwindow(QDialog, QWidget,form_secondwindow):
@@ -9,6 +17,8 @@ class secondwindow(QDialog, QWidget,form_secondwindow):
         super(secondwindow,self).__init__()
         self.initUI()
         self.show() # 두번째창 실행
+        self.setWindowTitle("Operant_Chamber_Ver 1.0")
+        self.setWindowIcon(QIcon("Scitech_Korea.png"))
 
     def initUI(self):
         self.setupUi(self)
