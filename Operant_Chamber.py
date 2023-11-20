@@ -10,6 +10,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5.QtWidgets import QMainWindow, QApplication, QVBoxLayout, QPushButton, QWidget
 import subprocess
 from secondwindow import secondwindow as SecondWindowClass
+import pickle
 
 form_class = uic.loadUiType("port.ui")[0]
 
