@@ -11,6 +11,7 @@ from PyQt5.QtWidgets import QMainWindow, QApplication, QVBoxLayout, QPushButton,
 import subprocess
 from secondwindow import secondwindow as SecondWindowClass
 import pickle
+import numpy
 
 form_class = uic.loadUiType("port.ui")[0]
 
@@ -42,6 +43,8 @@ class WindowClass(QMainWindow, form_class):
         self.end.clicked.connect(self.end_btn_)
         self.exit.clicked.connect(self.exit_btn)
         self.datawindow.clicked.connect(self.button_Second)
+        self.yes_btn.clicked.connect(self.toggle_radio_buttons)
+        self.no_btn.clicked.connect(self.toggle_radio_buttons)
         
         self.USB_name = 'USER'        # USB 이름
         self.ser = None
@@ -390,6 +393,20 @@ class WindowClass(QMainWindow, form_class):
         self.second = SecondWindowClass(self)
         self.second.exec()
         self.show()
+        
+        
+        
+    def toggle_radio_buttons(self):
+            sender = self.sender()  # 시그널을 트리거한 버튼을 얻습니다.
+
+            if sender == self.yes_btn:
+                if self.yes_btn.isChecked():
+                    self.no_btn.setChecked(False)
+                
+            elif sender == self.no_btn:
+                if self.no_btn.isChecked():
+                    self.yes_btn.setChecked(False)
+                
 
 
 
