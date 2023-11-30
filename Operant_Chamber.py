@@ -45,8 +45,10 @@ class WindowClass(QMainWindow, form_class):
         self.datawindow.clicked.connect(self.button_Second)
         self.yes_btn.clicked.connect(self.toggle_radio_buttons)
         self.no_btn.clicked.connect(self.toggle_radio_buttons)
+        self.clear_btn.clicked.connect(self.data_clear)
+        self.save_btn.clicked.connect(self.save_data)
         
-        self.USB_name = 'USER'        # USB 이름
+        self.USB_name = 'USER1'        # USB 이름
         self.ser = None
         self.stop_receiving_data = False
         
@@ -117,6 +119,7 @@ class WindowClass(QMainWindow, form_class):
             rd = self.reward_input.toPlainText()
             habv2_trials = self.hav2_input.toPlainText()
             must_touch_trials = self.touch_input.toPlainText()
+            ITI = self.ITI_input.toPlainText()
 
             missing_fields = []  # 경고 메시지
 
@@ -128,6 +131,8 @@ class WindowClass(QMainWindow, form_class):
                 missing_fields.append("habv2 trials")
             if not must_touch_trials:
                 missing_fields.append("must touch trials")
+            if not ITI:
+                missing_fields.append("ITI")
 
             if missing_fields:
                 QMessageBox.critical(self, "경고", f"{', '.join(missing_fields)}을(를) 입력하세요.")
@@ -148,18 +153,23 @@ class WindowClass(QMainWindow, form_class):
             habv2_trials = habv2_trials.encode('utf-8')
             must_touch_trials = must_touch_trials.encode('utf-8')
             video = video.encode('utf-8')
+            ITI = ITI.encode('utf-8')
 
             self.text.insertPlainText('experiment_id :' + experiment_id.decode('utf-8') + '\n')
             self.text.insertPlainText('reward duration :' + rd.decode('utf-8') + '\n')
             self.text.insertPlainText('habv2 trials :' + habv2_trials.decode('utf-8') + '\n')
             self.text.insertPlainText('must touch trials :' + must_touch_trials.decode('utf-8') + '\n')
+            
             self.text.insertPlainText('video recording :' + video.decode('utf-8') + '\n')
+            self.text.insertPlainText('ITI : ' + ITI.decode('utf-8') + 'sec' + '\n')
 
             self.send_and_receive("experiment id:", experiment_id)
             self.send_and_receive("reward duration:", rd)
             self.send_and_receive("habv2 trials:", habv2_trials)
             self.send_and_receive("must touch trials:", must_touch_trials)
+            
             self.send_and_receive("video recording?(y/n):", video)
+            self.send_and_receive("ITI:", ITI)
 
             if self.ser:
                 time.sleep(0.1)
@@ -229,17 +239,28 @@ class WindowClass(QMainWindow, form_class):
                         self.ITI_text.clear()  # 기존 텍스트를 모두 제거
                         self.ITI_text.insertPlainText(ITI_new_text)
                         QApplication.processEvents()
-                        if line and float(ITI_new_text[10:]) > 19.5:
+                        if line and float(ITI_new_text[10:]) > float(self.ITI_input.toPlainText()) - 0.5:
                             self.ITI_text.clear()
                         
                     elif line:
-                        if line[0] == 'y':
+                        if line[0] == 'y' :
                             line = ''
                             self.text.insertPlainText(line)
                             print(f"Line doesn't start with '*' or '@': {line}")
                             scrollbar = self.text.verticalScrollBar()  # 스크롤바 자동으로 내리기
                             scrollbar.setValue(scrollbar.maximum())
                             QApplication.processEvents()
+                            
+                        if line[0] == self.ITI_input.toPlainText():
+                            line = ''
+                            self.text.insertPlainText(line)
+                            print(f"Line doesn't start with '*' or '@': {line}")
+                            scrollbar = self.text.verticalScrollBar()  # 스크롤바 자동으로 내리기
+                            scrollbar.setValue(scrollbar.maximum())
+                            QApplication.processEvents()
+                                
+                            
+                            
                         else:
                             self.text.insertPlainText(line)
                             print(f"Line doesn't start with '*' or '@': {line}")
@@ -268,12 +289,13 @@ class WindowClass(QMainWindow, form_class):
         
         
         self.ITI_text.clear()
-        self.text.clear()
+        
         self.experiment_input.clear()
         self.reward_input.clear()
         self.hav2_input.clear()
         self.touch_input.clear()
         self.video_text.clear()
+        self.ITI_input.clear()
         
         
         
@@ -407,8 +429,32 @@ class WindowClass(QMainWindow, form_class):
                 if self.no_btn.isChecked():
                     self.yes_btn.setChecked(False)
                 
+                
+    def data_clear(self):
+        self.text.clear()
+        self.video_text.clear()
 
 
+
+
+
+    def save_data(self):
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        file_path, _ = QFileDialog.getSaveFileName(self, "Save to Notepad", "", "Text Files (*.txt);;All Files (*)", options=options)
+
+        if file_path:
+            # Ensure that the file path has the ".txt" extension
+            if not file_path.endswith(".txt"):
+                file_path += ".txt"
+
+            text_content = self.text.toPlainText()
+            try:
+                with open(file_path, 'w') as file:
+                    file.write(text_content)
+                QMessageBox.information(self, 'Success', f'Text saved to {file_path}')
+            except Exception as e:
+                QMessageBox.warning(self, 'Error', f'An error occurred: {str(e)}')
 
 
 
