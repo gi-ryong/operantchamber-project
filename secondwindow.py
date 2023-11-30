@@ -11,11 +11,6 @@ import subprocess
 import pickle
 import numpy
 
-import sys
-from PyQt5.QtWidgets import *
-from PyQt5 import uic
-from PyQt5.QtGui import *
-import pickle
 
 form_secondwindow = uic.loadUiType("secondwindow.ui")[0]  # 두 번째창 ui
 
@@ -35,7 +30,7 @@ class secondwindow(QDialog, form_secondwindow):
 
         # QTableWidget 초기화
         self.table_widget = QTableWidget(self)
-        self.table_widget.setGeometry(10, 10, 300, 400)
+        self.table_widget.setGeometry(10, 10, 320, 400)
 
     def Home(self):
         self.close()  # 창 닫기
@@ -67,22 +62,24 @@ class secondwindow(QDialog, form_secondwindow):
 
                     row = 0
                     for key, value in data.items():
-                        # 'out_poke' 키를 처음 만났을 때는 값을 추가하지 않음
-                        if key == 'out_poke' and isinstance(value, dict):
+                        
+                        if key == 'out_poke' and isinstance(value, dict):   # 'out_poke' 키를 처음 만났을 때는 값을 추가하지 않음
+                            
                             for inner_key, inner_value in value.items():
                                 inner_key_item = QTableWidgetItem(f"{key} - {inner_key}")
-                                inner_value_str = str(inner_value)
-                                # '['로 시작하거나 ']'로 끝나는 경우 제거
-                                inner_value_str = inner_value_str.strip('[]')
+                                inner_value_str = str(inner_value) 
+                                inner_value_str = inner_value_str.strip('[]')   # '['로 시작하거나 ']'로 끝나는 경우 제거
                                 inner_value_items = inner_value_str.split(",")  # 쉼표를 기준으로 나눠서 리스트로 변환
+                                
                                 for idx, item in enumerate(inner_value_items):
                                     item_item = QTableWidgetItem(item.strip())  # 좌우 공백 제거
-                                    # 유닉스 타임스탬프인 경우에만 변환 적용
-                                    if self.is_numeric(item.strip()):
+                                    
+                                    if self.is_numeric(item.strip()):   # 유닉스 타임스탬프인 경우에만 변환 적용
                                         timestamp = float(item.strip())
                                         if timestamp >= 1500000000:
                                             # timestamp += 9 * 3600  # Add 9 hours
                                             converted_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(timestamp))
+                                            converted_time += f".{str(int((timestamp % 1) * 1e6)).zfill(6)}"
                                             item_item = QTableWidgetItem(converted_time)
                                     self.table_widget.setItem(row + idx, 0, inner_key_item)
                                     self.table_widget.setItem(row + idx, 1, item_item)
@@ -90,18 +87,23 @@ class secondwindow(QDialog, form_secondwindow):
                                 row += len(inner_value_items)
                         else:
                             key_item = QTableWidgetItem(str(key))
+                            
+                            if 'trial_start' != key and 'trial'  == key:
+                                key_item = QTableWidgetItem(key.replace('trial', 'trial_end'))
+                                
                             value_str = str(value)
-                            # '['로 시작하거나 ']'로 끝나는 경우 제거
-                            value_str = value_str.strip('[]')
+                            value_str = value_str.strip('[]')   # '['로 시작하거나 ']'로 끝나는 경우 제거
                             value_items = value_str.split(",")  # 쉼표를 기준으로 나눠서 리스트로 변환
+                            
                             for idx, item in enumerate(value_items):
                                 item_item = QTableWidgetItem(item.strip())  # 좌우 공백 제거
-                                # 유닉스 타임스탬프인 경우에만 변환 적용
-                                if self.is_numeric(item.strip()):
+                                
+                                if self.is_numeric(item.strip()):   # 유닉스 타임스탬프인 경우에만 변환 적용
                                     timestamp = float(item.strip())
                                     if timestamp >= 1600000000:
                                         # timestamp += 9 * 3600  # Add 9 hours
                                         converted_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(timestamp))
+                                        converted_time += f".{str(int((timestamp % 1) * 1e6)).zfill(6)}"
                                         item_item = QTableWidgetItem(converted_time)
                                 self.table_widget.setItem(row + idx, 0, key_item)
                                 self.table_widget.setItem(row + idx, 1, item_item)
