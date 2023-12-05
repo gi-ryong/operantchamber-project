@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>684</width>
-    <height>461</height>
+    <height>556</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,20 +17,23 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>10</x>
       <y>30</y>
-      <width>71</width>
+      <width>91</width>
       <height>31</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">color: #005500;</string>
+    </property>
     <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;Serial Port&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;Serial Port :&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
    <widget class="QComboBox" name="port_list">
     <property name="geometry">
      <rect>
-      <x>90</x>
+      <x>100</x>
       <y>30</y>
       <width>81</width>
       <height>31</height>
@@ -40,7 +43,7 @@
    <widget class="QPushButton" name="btn">
     <property name="geometry">
      <rect>
-      <x>180</x>
+      <x>190</x>
       <y>30</y>
       <width>81</width>
       <height>31</height>
@@ -53,7 +56,7 @@
    <widget class="QPushButton" name="port_done">
     <property name="geometry">
      <rect>
-      <x>270</x>
+      <x>280</x>
       <y>30</y>
       <width>81</width>
       <height>31</height>
@@ -67,20 +70,23 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>90</y>
+      <y>160</y>
       <width>111</width>
       <height>31</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">color: #ff0000;</string>
+    </property>
     <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Experiment  ID:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Experiment ID:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
    <widget class="QPlainTextEdit" name="experiment_input">
     <property name="geometry">
      <rect>
       <x>150</x>
-      <y>90</y>
+      <y>160</y>
       <width>104</width>
       <height>31</height>
      </rect>
@@ -99,59 +105,71 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>140</y>
-      <width>111</width>
+      <y>210</y>
+      <width>131</width>
       <height>31</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">color: #ff0000;</string>
+    </property>
     <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Reward Duration :&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Reward Duration:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_4">
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>190</y>
+      <y>260</y>
       <width>111</width>
       <height>31</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">color: #ff0000;</string>
+    </property>
     <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Hav2 Trials :&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Hav2 Trials:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_5">
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>240</y>
-      <width>111</width>
+      <y>310</y>
+      <width>131</width>
       <height>31</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">color: #ff0000;</string>
+    </property>
     <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Must Touch Trials :&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Must Touch Trials:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_6">
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>340</y>
+      <y>410</y>
       <width>111</width>
       <height>31</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">color: #ff0000;</string>
+    </property>
     <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Video Recording :&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Video Recording:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
    <widget class="QPlainTextEdit" name="reward_input">
     <property name="geometry">
      <rect>
       <x>150</x>
-      <y>140</y>
+      <y>210</y>
       <width>104</width>
       <height>31</height>
      </rect>
@@ -164,7 +182,7 @@
     <property name="geometry">
      <rect>
       <x>150</x>
-      <y>190</y>
+      <y>260</y>
       <width>104</width>
       <height>31</height>
      </rect>
@@ -177,7 +195,7 @@
     <property name="geometry">
      <rect>
       <x>150</x>
-      <y>240</y>
+      <y>310</y>
       <width>104</width>
       <height>31</height>
      </rect>
@@ -190,10 +208,13 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>390</y>
+      <y>460</y>
       <width>111</width>
       <height>31</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
     </property>
     <property name="text">
      <string>실험 시작</string>
@@ -203,10 +224,13 @@
     <property name="geometry">
      <rect>
       <x>150</x>
-      <y>390</y>
+      <y>460</y>
       <width>111</width>
       <height>31</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
     </property>
     <property name="text">
      <string>실험 종료</string>
@@ -216,7 +240,7 @@
     <property name="geometry">
      <rect>
       <x>150</x>
-      <y>340</y>
+      <y>410</y>
       <width>61</width>
       <height>31</height>
      </rect>
@@ -229,7 +253,7 @@
     <property name="geometry">
      <rect>
       <x>210</x>
-      <y>340</y>
+      <y>410</y>
       <width>61</width>
       <height>31</height>
      </rect>
@@ -242,7 +266,7 @@
     <property name="geometry">
      <rect>
       <x>310</x>
-      <y>150</y>
+      <y>220</y>
       <width>351</width>
       <height>231</height>
      </rect>
@@ -252,7 +276,7 @@
     <property name="geometry">
      <rect>
       <x>310</x>
-      <y>90</y>
+      <y>160</y>
       <width>171</width>
       <height>31</height>
      </rect>
@@ -262,7 +286,7 @@
     <property name="geometry">
      <rect>
       <x>490</x>
-      <y>90</y>
+      <y>160</y>
       <width>171</width>
       <height>31</height>
      </rect>
@@ -298,10 +322,13 @@
     <property name="geometry">
      <rect>
       <x>310</x>
-      <y>130</y>
-      <width>54</width>
-      <height>12</height>
+      <y>200</y>
+      <width>61</width>
+      <height>16</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: #005500;</string>
     </property>
     <property name="text">
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Log Data&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -311,7 +338,7 @@
     <property name="geometry">
      <rect>
       <x>150</x>
-      <y>290</y>
+      <y>360</y>
       <width>104</width>
       <height>31</height>
      </rect>
@@ -324,20 +351,23 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>290</y>
+      <y>360</y>
       <width>111</width>
       <height>31</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">color: #ff0000;</string>
+    </property>
     <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;ITI :&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;ITI:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
    <widget class="QPushButton" name="clear_btn">
     <property name="geometry">
      <rect>
       <x>550</x>
-      <y>390</y>
+      <y>460</y>
       <width>111</width>
       <height>31</height>
      </rect>
@@ -350,13 +380,39 @@
     <property name="geometry">
      <rect>
       <x>430</x>
-      <y>390</y>
+      <y>460</y>
       <width>111</width>
       <height>31</height>
      </rect>
     </property>
     <property name="text">
      <string>저장</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="img_box">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>100</y>
+      <width>111</width>
+      <height>31</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_9">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>100</y>
+      <width>111</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: #ff0000;</string>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;imgae&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
   </widget>
