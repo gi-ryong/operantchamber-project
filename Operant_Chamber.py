@@ -12,12 +12,18 @@ import subprocess
 from secondwindow import secondwindow as SecondWindowClass
 import pickle
 import numpy
+import pandas as pd
+from PyQt5.QtGui import QIcon
+
 
 form_class = uic.loadUiType("port.ui")[0]
 
 nnum = 0  # 여기에 선언하면 전역변수
 
 ctrl_c = b'\x03'
+
+
+
 
 class WindowClass(QMainWindow, form_class):
     
@@ -48,12 +54,17 @@ class WindowClass(QMainWindow, form_class):
         self.clear_btn.clicked.connect(self.data_clear)
         self.save_btn.clicked.connect(self.save_data)
         
+        
+        
         self.USB_name = 'USER1'        # USB 이름
         self.ser = None
         self.stop_receiving_data = False
+        # self.img_status = False
         
         self.start.setEnabled(False)  # 시작 버튼 비활성화
         self.end.setEnabled(False)
+        
+        self.port_done.setStyleSheet('background-color: #d4cb51; ')
 
         
         self.yes_btn.setAutoExclusive(False)
@@ -94,15 +105,24 @@ class WindowClass(QMainWindow, form_class):
             
             self.pi_login()
             
+            
+            
+            
+            
             if not self.USB():
                 QMessageBox.critical(self, "경고", "USB를 연결하세요. \n또는 Port 번호를 확인하세요.")
                 
 
             else:
+            # if self.img_status == True:
+                
+                
                 self.run()
                 self.btn.setEnabled(False)
                 self.port_done.setEnabled(False)
                 self.port_list.setEnabled(False)
+                self.port_done.setStyleSheet('')
+                
                         
         except serial.SerialException as e:
             print(f"Failed to open the serial port: {e}")
@@ -120,6 +140,7 @@ class WindowClass(QMainWindow, form_class):
             habv2_trials = self.hav2_input.toPlainText()
             must_touch_trials = self.touch_input.toPlainText()
             ITI = self.ITI_input.toPlainText()
+            visual_select = self.img_box.currentText()
 
             missing_fields = []  # 경고 메시지
 
@@ -133,6 +154,8 @@ class WindowClass(QMainWindow, form_class):
                 missing_fields.append("must touch trials")
             if not ITI:
                 missing_fields.append("ITI")
+            if not visual_select:
+                missing_fields.append("visual_select")  
 
             if missing_fields:
                 QMessageBox.critical(self, "경고", f"{', '.join(missing_fields)}을(를) 입력하세요.")
@@ -154,6 +177,7 @@ class WindowClass(QMainWindow, form_class):
             must_touch_trials = must_touch_trials.encode('utf-8')
             video = video.encode('utf-8')
             ITI = ITI.encode('utf-8')
+            visual_select = visual_select.encode('utf-8')
 
             self.text.insertPlainText('experiment_id :' + experiment_id.decode('utf-8') + '\n')
             self.text.insertPlainText('reward duration :' + rd.decode('utf-8') + '\n')
@@ -162,6 +186,7 @@ class WindowClass(QMainWindow, form_class):
             
             self.text.insertPlainText('video recording :' + video.decode('utf-8') + '\n')
             self.text.insertPlainText('ITI : ' + ITI.decode('utf-8') + 'sec' + '\n')
+            self.text.insertPlainText('visual_select : ' + visual_select.decode('utf-8') + '\n')
 
             self.send_and_receive("experiment id:", experiment_id)
             self.send_and_receive("reward duration:", rd)
@@ -170,14 +195,20 @@ class WindowClass(QMainWindow, form_class):
             
             self.send_and_receive("video recording?(y/n):", video)
             self.send_and_receive("ITI:", ITI)
+            self.send_and_receive("img:", visual_select)
 
             if self.ser:
                 time.sleep(0.1)
                 self.start.setEnabled(False)
                 time.sleep(0.1)
+                self.start.setStyleSheet('')
+                time.sleep(0.1)
                 self.end.setEnabled(True)
                 time.sleep(0.1)
+                self.end.setStyleSheet('background-color: #d4cb51; ')
+                time.sleep(0.1)
                 self.receive_and_display_data()
+                print(visual_select)
                 
                 
         else:
@@ -204,6 +235,7 @@ class WindowClass(QMainWindow, form_class):
             print("응답이 도착했습니다:", response, data)
             self.ser.write(data + b'\n')
         else:
+            print(response)
             print("응답을 찾지 못했습니다. 타임아웃")
             
 
@@ -297,6 +329,8 @@ class WindowClass(QMainWindow, form_class):
         self.video_text.clear()
         self.ITI_input.clear()
         
+        self.port_done.setStyleSheet('background-color: #d4cb51; ')
+        
         
         
       
@@ -308,6 +342,8 @@ class WindowClass(QMainWindow, form_class):
             
             
             self.end.setEnabled(False)
+            time.sleep(0.1)
+            self.end.setStyleSheet('')
             
             self.stop_receiving_data = True
             
@@ -332,10 +368,13 @@ class WindowClass(QMainWindow, form_class):
             self.ser.write(b'password\n')  # 비밀번호 입력
             time.sleep(0.1)
             
+            
+            
         
      
     def run(self):
-        
+        self.img_select()
+        time.sleep(0.1)
         
         self.ser.write(b'cd Desktop\n')
         time.sleep(0.1)
@@ -367,6 +406,7 @@ class WindowClass(QMainWindow, form_class):
             print("응답을 찾지 못했습니다. 타임아웃")
             
         self.start.setEnabled(True)
+        self.start.setStyleSheet('background-color: #d4cb51; ')
         self.statusbar.showMessage("Connected")   # 상태바 Connected 표시 
      
         
@@ -455,6 +495,27 @@ class WindowClass(QMainWindow, form_class):
                 QMessageBox.information(self, 'Success', f'Text saved to {file_path}')
             except Exception as e:
                 QMessageBox.warning(self, 'Error', f'An error occurred: {str(e)}')
+
+
+
+    def img_select(self):
+        self.ser.write(f'ls /media/pi/{self.USB_name}/visuals\n'.encode('utf-8'))  
+        time.sleep(0.1)
+        img_read = self.ser.read(1024).decode('utf-8')
+        time.sleep(0.1)
+
+        # 파일 목록 중 .png 확장자를 가진 파일만 추출
+        file_list = [file.strip() for file in img_read.split() if file.endswith('.png')]
+
+        # combo box를 초기화하고 파일 목록을 추가
+        self.img_box.clear()
+        self.img_box.addItems(file_list)
+
+        time.sleep(0.1)
+
+        # self.img_status = True
+        
+
 
 
 
