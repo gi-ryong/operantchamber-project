@@ -70,10 +70,23 @@ class WindowClass(QMainWindow, form_class):
         self.end.setEnabled(False)
         
         self.port_done.setStyleSheet('background-color: #d4cb51; ')
+        self.exit.setStyleSheet('background-color: #ff0000; ')
 
         
         self.yes_btn.setAutoExclusive(False)
         self.no_btn.setAutoExclusive(False)
+        
+        self.img_box.setEnabled(False)
+        self.experiment_input.setReadOnly(True)
+        self.reward_input.setReadOnly(True)
+        self.hav2_input.setReadOnly(True)
+        self.touch_input.setReadOnly(True)
+        self.ITI_input.setReadOnly(True)
+        
+        self.yes_btn.setEnabled(False)
+        self.no_btn.setEnabled(False)
+        
+        
         
     def btn_clicked(self):
         self.port_list.setEnabled(True)
@@ -125,6 +138,15 @@ class WindowClass(QMainWindow, form_class):
                 
                 
                 self.run()
+                self.img_box.setEnabled(True)
+                self.experiment_input.setReadOnly(False)
+                self.reward_input.setReadOnly(False)
+                self.hav2_input.setReadOnly(False)
+                self.touch_input.setReadOnly(False)
+                self.ITI_input.setReadOnly(False)
+                
+                self.yes_btn.setEnabled(True)
+                self.no_btn.setEnabled(True)
                 self.btn.setEnabled(False)
                 self.port_done.setEnabled(False)
                 self.port_list.setEnabled(False)
@@ -138,7 +160,15 @@ class WindowClass(QMainWindow, form_class):
     def start_btn_(self):
         if self.ser:
             
+            self.img_box.setEnabled(False)
+            self.experiment_input.setReadOnly(True)
+            self.reward_input.setReadOnly(True)
+            self.hav2_input.setReadOnly(True)
+            self.touch_input.setReadOnly(True)
+            self.ITI_input.setReadOnly(True)
             
+            self.yes_btn.setEnabled(False)
+            self.no_btn.setEnabled(False)
             
             
             self.stop_receiving_data = False
@@ -367,6 +397,17 @@ class WindowClass(QMainWindow, form_class):
         
         self.port_done.setStyleSheet('background-color: #d4cb51; ')
         
+        
+        self.img_box.clear()
+        self.img_box.setEnabled(False)
+        self.experiment_input.setReadOnly(True)
+        self.reward_input.setReadOnly(True)
+        self.hav2_input.setReadOnly(True)
+        self.touch_input.setReadOnly(True)
+        self.ITI_input.setReadOnly(True)
+        
+        self.yes_btn.setEnabled(False)
+        self.no_btn.setEnabled(False)
         
         
       
