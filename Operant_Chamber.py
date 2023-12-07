@@ -14,6 +14,8 @@ import pickle
 import numpy
 import pandas as pd
 from PyQt5.QtGui import QIcon
+import threading
+from PyQt5.QtCore import QTimer
 
 
 form_class = uic.loadUiType("port.ui")[0]
@@ -60,6 +62,9 @@ class WindowClass(QMainWindow, form_class):
         self.ser = None
         self.stop_receiving_data = False
         # self.img_status = False
+        self.must_touch_trials_value = None
+        self.trial_done_detected = False
+        self.trial_starts_value = None
         
         self.start.setEnabled(False)  # 시작 버튼 비활성화
         self.end.setEnabled(False)
@@ -94,6 +99,8 @@ class WindowClass(QMainWindow, form_class):
                 self.port_list.addItem(aa)
                 
     def port_done_btn(self):
+        
+        self.data_clear()
         
         self.ser = None
          
@@ -241,70 +248,99 @@ class WindowClass(QMainWindow, form_class):
 
     def receive_and_display_data(self):
         
+        must_touch_trials = self.touch_input.toPlainText()
+        
+        
         if self.ser is not None:
             print(self.ser)
-            buffer = ""  # 데이터를 저장할 버퍼 변수
+            buffer = ""
+            
+            while not self.stop_receiving_data:
+                self.statusbar.showMessage("실험 시작")
+                time.sleep(0.01)
+                tempTime = time.time()
+                data_received = self.ser.read(1024).decode('utf-8')
 
-        while not self.stop_receiving_data:
-            self.statusbar.showMessage("Start of the experiment")   # 상태바 Start of the experiment 표시
-            time.sleep(0.01)
-            tempTime = time.time()
-            data_received = self.ser.read(1024).decode('utf-8')  # 데이터를 읽습니다 (예: 1024바이트 읽음)
+                if data_received:
+                    buffer += data_received
 
-            if data_received:
-                buffer += data_received  # 읽은 데이터를 버퍼에 추가
+                    while '\n' in buffer:
+                        line, buffer = buffer.split('\n', 1)
 
-                # 데이터를 한 줄씩 처리
-                while '\n' in buffer:
-                    line, buffer = buffer.split('\n', 1)
+                        ###########################실험 끝나면 자동으로 종료###########################
+
+                        if 'trial' in line and 'starts' in line:
+                            trial_starts_parts = line.split(' ')
+                            for part in trial_starts_parts:
+                                if part.isdigit():
+                                    self.trial_starts_value = int(part)
+  
+                                    break
+
+                        if int(must_touch_trials) == self.trial_starts_value:
+                            if 'trial done' in line:
+                                        self.trial_done_detected = True
+
+                        if int(must_touch_trials) == self.trial_starts_value and self.trial_done_detected:
+                            
+                            QTimer.singleShot(5, self.end_btn_)  # QTimer를 사용하여 5ms 후에 end_btn_ 호출
+
+                        ##############################################################################
                     
-                    if line and line[0] == '*':  # video record 찾기
-                        new_text = line[1:]
-                        new_text = new_text.strip()
-                        self.video_text.clear()  # 기존 텍스트를 모두 제거
-                        self.video_text.insertPlainText(new_text)
-                        QApplication.processEvents()
-                        
-                    elif line and line[0] == '@':  # ITI 찾기
-                        ITI_new_text = line[1:]
-                        ITI_new_text = ITI_new_text.strip()
-                        self.ITI_text.clear()  # 기존 텍스트를 모두 제거
-                        self.ITI_text.insertPlainText(ITI_new_text)
-                        QApplication.processEvents()
-                        if line and float(ITI_new_text[10:]) > float(self.ITI_input.toPlainText()) - 0.5:
-                            self.ITI_text.clear()
-                        
-                    elif line:
-                        if line[0] == 'y' :
-                            line = ''
-                            self.text.insertPlainText(line)
-                            print(f"Line doesn't start with '*' or '@': {line}")
-                            scrollbar = self.text.verticalScrollBar()  # 스크롤바 자동으로 내리기
-                            scrollbar.setValue(scrollbar.maximum())
+                        if line and line[0] == '*':  # video record 찾기
+                            new_text = line[1:]
+                            new_text = new_text.strip()
+                            self.video_text.clear()  # 기존 텍스트를 모두 제거
+                            self.video_text.insertPlainText(new_text)
                             QApplication.processEvents()
                             
-                        if line[0] == self.ITI_input.toPlainText():
-                            line = ''
-                            self.text.insertPlainText(line)
-                            print(f"Line doesn't start with '*' or '@': {line}")
-                            scrollbar = self.text.verticalScrollBar()  # 스크롤바 자동으로 내리기
-                            scrollbar.setValue(scrollbar.maximum())
+                        elif line and line[0] == '@':  # ITI 찾기
+                            ITI_new_text = line[1:]
+                            ITI_new_text = ITI_new_text.strip()
+                            self.ITI_text.clear()  # 기존 텍스트를 모두 제거
+                            self.ITI_text.insertPlainText(ITI_new_text)
                             QApplication.processEvents()
+                            if ITI_new_text:
+                                if float(ITI_new_text[10:]) > float(self.ITI_input.toPlainText()) - 0.5:
+                                    self.ITI_text.clear()
+                            
+                        elif line:
+                            if line[0] == 'y' :
+                                line = ''
+                                self.text.insertPlainText(line)
+                                print(f"Line doesn't start with '*' or '@': {line}")
+                                scrollbar = self.text.verticalScrollBar()  # 스크롤바 자동으로 내리기
+                                scrollbar.setValue(scrollbar.maximum())
+                                QApplication.processEvents()
                                 
-                            
-                            
-                        else:
-                            self.text.insertPlainText(line)
-                            print(f"Line doesn't start with '*' or '@': {line}")
-                            scrollbar = self.text.verticalScrollBar()  # 스크롤바 자동으로 내리기
-                            scrollbar.setValue(scrollbar.maximum())
-                            QApplication.processEvents()
+                            if line[0] == self.ITI_input.toPlainText():
+                                line = ''
+                                self.text.insertPlainText(line)
+                                print(f"Line doesn't start with '*' or '@': {line}")
+                                scrollbar = self.text.verticalScrollBar()  # 스크롤바 자동으로 내리기
+                                scrollbar.setValue(scrollbar.maximum())
+                                QApplication.processEvents()
+                                    
+                                
+                                
+                            else:
+                                self.text.insertPlainText(line)
+                                print(f"Line doesn't start with '*' or '@': {line}")
+                                scrollbar = self.text.verticalScrollBar()  # 스크롤바 자동으로 내리기
+                                scrollbar.setValue(scrollbar.maximum())
+                                QApplication.processEvents()
         else:
             print("Serial port is not open. Please open the port before starting the data display.")
 
 
         
     def end_btn_(self):
+        
+        must_touch_trials = self.touch_input.toPlainText()
+        
+        
+        print(f'must_touch_trials : {type(must_touch_trials)}, trial_done_detected : {self.trial_done_detected}, trial_starts_value : {type(self.trial_starts_value)}')
+        
         self.statusbar.showMessage("Ready to connect")
         self.port_done.setText("연결")
         self.btn.setEnabled(True)
@@ -350,10 +386,13 @@ class WindowClass(QMainWindow, form_class):
             self.video_text.clear()
             QApplication.processEvents()
             print("Clearing video_text")
-            self.ser.write(ctrl_c)
-            self.ser.close()
             
-        self.ser = None
+            
+            if self.ser:
+                self.ser.write(ctrl_c)
+                self.ser.close()
+                
+                self.ser = None
         
             
                      
