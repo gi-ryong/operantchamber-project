@@ -1,3 +1,7 @@
+# 프로그램 제작자: gi-ryong son
+# 작성일: 2023-11 ~ 2023-12
+
+
 import sys                              
 from PyQt5.QtWidgets import *           # PyQt5 사용하기 위한 것
 from PyQt5 import uic                   # ui 파일을 직접 이용하기 위한 것
@@ -86,6 +90,18 @@ class WindowClass(QMainWindow, form_class):
         self.yes_btn.setEnabled(False)
         self.no_btn.setEnabled(False)
         
+        self.change_circle_color(QColor(255, 0, 0))  # 빨강으로 변경
+        
+    def paintEvent(self, event):
+        painter = QPainter(self)
+        painter.setPen(self.circle_color)
+        painter.setBrush(self.circle_color)
+        painter.drawEllipse(390, 40, 15, 15)
+        
+    def change_circle_color(self, color):
+        self.circle_color = color
+        self.update()  # GUI 업데이트
+        QApplication.processEvents()
         
         
     def btn_clicked(self):
@@ -114,6 +130,7 @@ class WindowClass(QMainWindow, form_class):
     def port_done_btn(self):
         
         self.data_clear()
+        self.trial_done_detected = False
         
         self.ser = None
          
@@ -151,6 +168,9 @@ class WindowClass(QMainWindow, form_class):
                 self.port_done.setEnabled(False)
                 self.port_list.setEnabled(False)
                 self.port_done.setStyleSheet('')
+                self.change_circle_color(QColor(255, 255, 0))  # 노랑으로 변경
+                
+                
                 
                         
         except serial.SerialException as e:
@@ -159,6 +179,7 @@ class WindowClass(QMainWindow, form_class):
 
     def start_btn_(self):
         if self.ser:
+            
             
             self.img_box.setEnabled(False)
             self.experiment_input.setReadOnly(True)
@@ -223,7 +244,7 @@ class WindowClass(QMainWindow, form_class):
             
             self.text.insertPlainText('video recording :' + video.decode('utf-8') + '\n')
             self.text.insertPlainText('ITI : ' + ITI.decode('utf-8') + 'sec' + '\n')
-            self.text.insertPlainText('visual_select : ' + visual_select.decode('utf-8') + '\n')
+            self.text.insertPlainText('visual_select : ' + visual_select.decode('utf-8') + '\n\n')
 
             self.send_and_receive("experiment id:", experiment_id)
             self.send_and_receive("reward duration:", rd)
@@ -233,6 +254,8 @@ class WindowClass(QMainWindow, form_class):
             self.send_and_receive("video recording?(y/n):", video)
             self.send_and_receive("ITI:", ITI)
             self.send_and_receive("img:", visual_select)
+            
+            self.change_circle_color(QColor(0, 255, 0))  # 초록색으로 변경
 
             if self.ser:
                 time.sleep(0.1)
@@ -246,6 +269,7 @@ class WindowClass(QMainWindow, form_class):
                 time.sleep(0.1)
                 self.receive_and_display_data()
                 print(visual_select)
+                
                 
                 
         else:
@@ -279,6 +303,8 @@ class WindowClass(QMainWindow, form_class):
     def receive_and_display_data(self):
         
         must_touch_trials = self.touch_input.toPlainText()
+        
+        
         
         
         if self.ser is not None:
@@ -333,30 +359,18 @@ class WindowClass(QMainWindow, form_class):
                             if ITI_new_text:
                                 if float(ITI_new_text[10:]) > float(self.ITI_input.toPlainText()) - 0.5:
                                     self.ITI_text.clear()
-                            
-                        elif line:
-                            if line[0] == 'y' :
-                                line = ''
-                                self.text.insertPlainText(line)
-                                print(f"Line doesn't start with '*' or '@': {line}")
-                                scrollbar = self.text.verticalScrollBar()  # 스크롤바 자동으로 내리기
-                                scrollbar.setValue(scrollbar.maximum())
-                                QApplication.processEvents()
-                                
-                            if line[0] == self.ITI_input.toPlainText():
-                                line = ''
-                                self.text.insertPlainText(line)
-                                print(f"Line doesn't start with '*' or '@': {line}")
-                                scrollbar = self.text.verticalScrollBar()  # 스크롤바 자동으로 내리기
-                                scrollbar.setValue(scrollbar.maximum())
-                                QApplication.processEvents()
                                     
-                                
-                                
+                        
+                                    
+                        elif line:
+                            if line.startswith(self.img_box.currentText()):
+                            # 조건에 해당하는 경우 라인을 출력하지 않고 넘어감
+                                print(f"이거는 나오면 안되는거 : {line}")
                             else:
+                                # 그 외의 경우에는 라인을 출력
                                 self.text.insertPlainText(line)
                                 print(f"Line doesn't start with '*' or '@': {line}")
-                                scrollbar = self.text.verticalScrollBar()  # 스크롤바 자동으로 내리기
+                                scrollbar = self.text.verticalScrollBar()
                                 scrollbar.setValue(scrollbar.maximum())
                                 QApplication.processEvents()
         else:
@@ -365,7 +379,7 @@ class WindowClass(QMainWindow, form_class):
 
         
     def end_btn_(self):
-        
+        self.change_circle_color(QColor(255, 0, 0))  # 빨강으로 변경
         must_touch_trials = self.touch_input.toPlainText()
         
         
@@ -375,6 +389,7 @@ class WindowClass(QMainWindow, form_class):
         self.port_done.setText("연결")
         self.btn.setEnabled(True)
         self.port_done.setEnabled(True)
+        
         
         
          # video 버튼 체크 해제
@@ -597,7 +612,7 @@ class WindowClass(QMainWindow, form_class):
         
 
 
-
+    
 
 
 
