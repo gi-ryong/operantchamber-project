@@ -10,6 +10,8 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidget, QTableWidge
 import subprocess
 import pickle
 import numpy
+import pandas as pd
+import csv
 
 
 form_secondwindow = uic.loadUiType("secondwindow.ui")[0]  # 두 번째창 ui
@@ -27,7 +29,8 @@ class secondwindow(QDialog, form_secondwindow):
         self.home_btn.clicked.connect(self.Home)
         self.serch_btn.clicked.connect(self.open_file_dialog)
         self.clear_btn.clicked.connect(self.clear)
-
+        self.data_save_btn.clicked.connect(self.save_to_csv)
+        
         # QTableWidget 초기화
         self.table_widget = QTableWidget(self)
         self.table_widget.setGeometry(10, 10, 320, 400)
@@ -120,6 +123,49 @@ class secondwindow(QDialog, form_secondwindow):
 
     def clear(self):
         self.table_widget.clearContents()
+        
+        
+    def save_to_csv(self):
+        # 사용자에게 저장할 파일 경로를 선택하도록 함
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        file_name, _ = QFileDialog.getSaveFileName(self, "Save to CSV", "", "CSV Files (*.csv);;All Files (*)",
+                                                   options=options)
+
+        if file_name:
+            try:
+                # 데이터 수집
+                rows = self.table_widget.rowCount()
+                cols = self.table_widget.columnCount()
+                data = []
+
+                for row in range(rows):
+                    row_data = []
+                    for col in range(cols):
+                        item = self.table_widget.item(row, col)
+                        row_data.append(item.text() if item else "")
+                    data.append(row_data)
+
+                # 데이터프레임 생성
+                df = pd.DataFrame(data)
+
+                # 시간 값이 있는 열들을 문자열로 변환
+                for col in df.columns:
+                    if pd.api.types.is_datetime64_any_dtype(df[col]):
+                        df[col] = pd.to_datetime(df[col]).strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]
+                file_name = file_name + '.csv'
+                # CSV 파일로 저장
+                df.to_csv(file_name, index=False, header=False, quoting=csv.QUOTE_NONNUMERIC)
+                print(f"Data saved to {file_name}")
+                QMessageBox.information(self, 'Success', f'Text saved to {file_name}')
+            except Exception as e:
+                print(f"Error saving to CSV: {e}")
+                QMessageBox.warning(self, 'Error', f'An error occurred: {str(e)}')
+    
+
+
+
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
