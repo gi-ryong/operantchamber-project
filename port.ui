@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>684</width>
-    <height>556</height>
+    <width>681</width>
+    <height>510</height>
    </rect>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>681</width>
+    <height>510</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
@@ -17,7 +23,7 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>20</x>
       <y>30</y>
       <width>91</width>
       <height>31</height>
@@ -33,7 +39,7 @@
    <widget class="QComboBox" name="port_list">
     <property name="geometry">
      <rect>
-      <x>100</x>
+      <x>110</x>
       <y>30</y>
       <width>81</width>
       <height>31</height>
@@ -43,7 +49,7 @@
    <widget class="QPushButton" name="btn">
     <property name="geometry">
      <rect>
-      <x>190</x>
+      <x>200</x>
       <y>30</y>
       <width>81</width>
       <height>31</height>
@@ -56,7 +62,7 @@
    <widget class="QPushButton" name="port_done">
     <property name="geometry">
      <rect>
-      <x>280</x>
+      <x>290</x>
       <y>30</y>
       <width>81</width>
       <height>31</height>
@@ -70,23 +76,23 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>160</y>
+      <y>150</y>
       <width>111</width>
       <height>31</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: #ff0000;</string>
+     <string notr="true">color: #005500;</string>
     </property>
     <property name="text">
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Experiment ID:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
-   <widget class="QPlainTextEdit" name="experiment_input">
+   <widget class="QLineEdit" name="experiment_input">
     <property name="geometry">
      <rect>
       <x>150</x>
-      <y>160</y>
+      <y>150</y>
       <width>104</width>
       <height>31</height>
      </rect>
@@ -94,10 +100,10 @@
     <property name="layoutDirection">
      <enum>Qt::LeftToRight</enum>
     </property>
-    <property name="tabChangesFocus">
+    <property name="tabChangesFocus" stdset="0">
      <bool>false</bool>
     </property>
-    <property name="undoRedoEnabled">
+    <property name="undoRedoEnabled" stdset="0">
      <bool>false</bool>
     </property>
    </widget>
@@ -105,13 +111,13 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>210</y>
+      <y>200</y>
       <width>131</width>
       <height>31</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: #ff0000;</string>
+     <string notr="true">color: #005500;</string>
     </property>
     <property name="text">
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Reward Duration:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -121,13 +127,13 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>260</y>
+      <y>250</y>
       <width>111</width>
       <height>31</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: #ff0000;</string>
+     <string notr="true">color: #005500;</string>
     </property>
     <property name="text">
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Hav2 Trials:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -137,13 +143,13 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>310</y>
+      <y>300</y>
       <width>131</width>
       <height>31</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: #ff0000;</string>
+     <string notr="true">color: #005500;</string>
     </property>
     <property name="text">
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Must Touch Trials:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -153,54 +159,54 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>410</y>
+      <y>400</y>
       <width>111</width>
       <height>31</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: #ff0000;</string>
+     <string notr="true">color: #005500;</string>
     </property>
     <property name="text">
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Video Recording:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
-   <widget class="QPlainTextEdit" name="reward_input">
+   <widget class="QLineEdit" name="reward_input">
     <property name="geometry">
      <rect>
       <x>150</x>
-      <y>210</y>
+      <y>200</y>
       <width>104</width>
       <height>31</height>
      </rect>
     </property>
-    <property name="plainText">
+    <property name="plainText" stdset="0">
      <string/>
     </property>
    </widget>
-   <widget class="QPlainTextEdit" name="hav2_input">
+   <widget class="QLineEdit" name="hav2_input">
     <property name="geometry">
      <rect>
       <x>150</x>
-      <y>260</y>
+      <y>250</y>
       <width>104</width>
       <height>31</height>
      </rect>
     </property>
-    <property name="plainText">
+    <property name="plainText" stdset="0">
      <string/>
     </property>
    </widget>
-   <widget class="QPlainTextEdit" name="touch_input">
+   <widget class="QLineEdit" name="touch_input">
     <property name="geometry">
      <rect>
       <x>150</x>
-      <y>310</y>
+      <y>300</y>
       <width>104</width>
       <height>31</height>
      </rect>
     </property>
-    <property name="plainText">
+    <property name="plainText" stdset="0">
      <string/>
     </property>
    </widget>
@@ -208,7 +214,7 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>460</y>
+      <y>450</y>
       <width>111</width>
       <height>31</height>
      </rect>
@@ -224,7 +230,7 @@
     <property name="geometry">
      <rect>
       <x>150</x>
-      <y>460</y>
+      <y>450</y>
       <width>111</width>
       <height>31</height>
      </rect>
@@ -240,7 +246,7 @@
     <property name="geometry">
      <rect>
       <x>150</x>
-      <y>410</y>
+      <y>400</y>
       <width>61</width>
       <height>31</height>
      </rect>
@@ -253,7 +259,7 @@
     <property name="geometry">
      <rect>
       <x>210</x>
-      <y>410</y>
+      <y>400</y>
       <width>61</width>
       <height>31</height>
      </rect>
@@ -266,9 +272,9 @@
     <property name="geometry">
      <rect>
       <x>310</x>
-      <y>220</y>
+      <y>180</y>
       <width>351</width>
-      <height>231</height>
+      <height>261</height>
      </rect>
     </property>
    </widget>
@@ -276,17 +282,23 @@
     <property name="geometry">
      <rect>
       <x>310</x>
-      <y>160</y>
+      <y>120</y>
       <width>171</width>
       <height>31</height>
      </rect>
+    </property>
+    <property name="cursor" stdset="0">
+     <cursorShape>ArrowCursor</cursorShape>
+    </property>
+    <property name="tabChangesFocus">
+     <bool>false</bool>
     </property>
    </widget>
    <widget class="QTextBrowser" name="ITI_text">
     <property name="geometry">
      <rect>
       <x>490</x>
-      <y>160</y>
+      <y>120</y>
       <width>171</width>
       <height>31</height>
      </rect>
@@ -308,9 +320,9 @@
    <widget class="QPushButton" name="datawindow">
     <property name="geometry">
      <rect>
-      <x>410</x>
+      <x>480</x>
       <y>30</y>
-      <width>111</width>
+      <width>91</width>
       <height>31</height>
      </rect>
     </property>
@@ -322,7 +334,7 @@
     <property name="geometry">
      <rect>
       <x>310</x>
-      <y>200</y>
+      <y>160</y>
       <width>61</width>
       <height>16</height>
      </rect>
@@ -334,16 +346,16 @@
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Log Data&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
-   <widget class="QPlainTextEdit" name="ITI_input">
+   <widget class="QLineEdit" name="ITI_input">
     <property name="geometry">
      <rect>
       <x>150</x>
-      <y>360</y>
+      <y>350</y>
       <width>104</width>
       <height>31</height>
      </rect>
     </property>
-    <property name="plainText">
+    <property name="plainText" stdset="0">
      <string/>
     </property>
    </widget>
@@ -351,13 +363,13 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>360</y>
+      <y>350</y>
       <width>111</width>
       <height>31</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: #ff0000;</string>
+     <string notr="true">color: #005500;</string>
     </property>
     <property name="text">
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;ITI:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -367,7 +379,7 @@
     <property name="geometry">
      <rect>
       <x>550</x>
-      <y>460</y>
+      <y>450</y>
       <width>111</width>
       <height>31</height>
      </rect>
@@ -380,7 +392,7 @@
     <property name="geometry">
      <rect>
       <x>430</x>
-      <y>460</y>
+      <y>450</y>
       <width>111</width>
       <height>31</height>
      </rect>
@@ -394,7 +406,7 @@
      <rect>
       <x>150</x>
       <y>100</y>
-      <width>111</width>
+      <width>101</width>
       <height>31</height>
      </rect>
     </property>
@@ -409,10 +421,42 @@
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: #ff0000;</string>
+     <string notr="true">color: #005500;</string>
     </property>
     <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;imgae&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;image:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_11">
+    <property name="geometry">
+     <rect>
+      <x>490</x>
+      <y>100</y>
+      <width>161</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: #005500;</string>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Inter-Trial Interval Time&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_12">
+    <property name="geometry">
+     <rect>
+      <x>310</x>
+      <y>100</y>
+      <width>111</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: #005500;</string>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Recording Status&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
   </widget>
@@ -423,6 +467,28 @@
    </property>
   </action>
  </widget>
+ <tabstops>
+  <tabstop>port_list</tabstop>
+  <tabstop>btn</tabstop>
+  <tabstop>port_done</tabstop>
+  <tabstop>img_box</tabstop>
+  <tabstop>experiment_input</tabstop>
+  <tabstop>reward_input</tabstop>
+  <tabstop>hav2_input</tabstop>
+  <tabstop>touch_input</tabstop>
+  <tabstop>ITI_input</tabstop>
+  <tabstop>yes_btn</tabstop>
+  <tabstop>no_btn</tabstop>
+  <tabstop>start</tabstop>
+  <tabstop>end</tabstop>
+  <tabstop>save_btn</tabstop>
+  <tabstop>clear_btn</tabstop>
+  <tabstop>datawindow</tabstop>
+  <tabstop>exit</tabstop>
+  <tabstop>video_text</tabstop>
+  <tabstop>ITI_text</tabstop>
+  <tabstop>text</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
